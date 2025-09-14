@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Training Hall Booking</title>
+  <link rel="icon" type="icon" href="iconlogo.png">
+
+  <link rel="stylesheet" href="styleforrooms.css">
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar">
+    <div class="logo">
+      <img src="Logo.png" alt="Methods Logo">
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="SOLUTIONS.html">Solutions</a>
+      <a href="OFFERS.html" class="active">Working space</a>
+      <a href="ABOUT.html">About</a>
+      <a href="CONTACT.html">Contact</a>
+    </nav>
+    <button id="theme-toggle">🌙</button>
+  </header>
+
+  <!-- =====  INFO ===== -->
+  <section class="room-details">
+    <h1>Private Room</h1>
+    <img src="41abbdd4-d680-4f35-be98-b090c5038211.jpeg" alt="Private Room" class="room-img">
+    <p class="price">EGP 100 / hour</p>
+  </section>
+
+  <!-- ===== FACILITIES ===== -->
+  <section class="time-slots">
+    <h2>Booking Time</h2>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="morning">Morning</button>
+      <button class="tab-btn" data-tab="evening">Evening</button>
+    </div>
+
+    <div class="tab-content" id="morning">
+      <h3>Morning Slots</h3>
+      <div class="rates">
+        <div>Hourly: EGP 100</div>
+        <div>Daily: EGP 800</div>
+        <div>Monthly: EGP 18000</div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="evening" style="display:none;">
+      <h3>Evening Slots</h3>
+      <div class="rates">
+        <div>Hourly: EGP 120</div>
+        <div>Daily: EGP 900</div>
+        <div>Monthly: EGP 20000</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BOOKING FORM ===== -->
+  <section class="booking">
+    <h2>Book Your Slot</h2>
+    <form class="booking-form">
+      <label for="name">Full Name *</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Email *</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="mobile">Mobile *</label>
+      <input type="tel" id="mobile" name="mobile" required>
+
+      <label for="duration">long *</label> 
+      <select id="duration" name="duration" required>
+        <option value="">-- Select --</option>
+        <option value="hourly">Hourly</option>
+        <option value="daily">Daily</option>
+        <option value="monthly">Monthly</option>
+      </select>
+      
+      <label for="name">Date *</label>
+      <input type="date" id="date" name="name" required>
+
+      <label for="duration">period *</label> 
+      <select id="duration" name="duration" required>
+        <option value="">-- Select --</option>
+        <option value="hourly">1 hour</option>
+        <option value="daily">2 hours</option>
+        <option value="monthly">3 hours</option>
+        <option value="monthly">4 hours</option>
+        <option value="monthly">5 hours</option>
+        <option value="monthly">6 hours</option>
+        <option value="monthly">Daily (evening - morning)</option>
+        <option value="monthly">Monthly (evening - morning)</option>
+
+        </option>
+      </select>
+
+      <label for="duration">when *</label> 
+      <select id="duration" name="duration" required>
+        <option value="">-- Select --</option>
+        <option value="hourly">Morning</option>
+        <option value="daily">Evening</option>
+      </select>
+
+      <label for="notes">Notes</label>
+      <textarea id="notes" name="notes" rows="4" placeholder="Write any special requests..."></textarea>
+
+      <button type="submit" class="btn">Confirm Booking</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Methods Business Solutions. All Rights Reserved.</p>
+  </footer>
+
+  <!-- ===== SCRIPT ===== -->
+  <script>
+    // Include room price updater
+    const script = document.createElement('script');
+    script.src = 'room-price-updater.js';
+    document.head.appendChild(script);
+
+    // Dark/Light Mode
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      themeToggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+    });
+
+    // Tabs
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.dataset.tab;
+        tabContents.forEach(tc => tc.style.display = tc.id === target ? 'block' : 'none');
+      });
+    });
+  </script>
+</body>
+</html>
