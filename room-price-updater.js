@@ -240,7 +240,6 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
-}
 
 // Auto-initialize based on page
 document.addEventListener('DOMContentLoaded', () => {
