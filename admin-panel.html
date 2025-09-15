@@ -8,6 +8,9 @@
   <link rel="icon" type="icon" href="iconlogo.png">
 </head>
 <body>
+  <!-- Security Configuration -->
+  <script src="security-config.js"></script>
+  
   <div class="admin-container">
     <header class="admin-header">
       <div class="logo">
@@ -16,6 +19,7 @@
       <div class="admin-nav">
         <span id="admin-welcome">Welcome, Admin</span>
         <button id="logout-btn" class="btn-logout">Logout</button>
+        <span class="last-update" id="last-update-time"></span>
       </div>
     </header>
 
@@ -145,5 +149,6 @@
   </div>
 
   <script src="admin-panel.js"></script>
+  <script src="admin-auth.js"></script>
 </body>
 </html>

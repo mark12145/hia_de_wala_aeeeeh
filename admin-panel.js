@@ -81,7 +81,7 @@ class AdminPanel {
     btn.classList.add('loading');
     btn.textContent = 'Updating...';
 
-    // Simulate API call
+    // Enhanced update with immediate propagation
     setTimeout(() => {
       try {
         // Collect all prices for this room
@@ -106,6 +106,9 @@ class AdminPanel {
           // Save to localStorage
           this.savePriceData();
           
+          // Immediately broadcast changes to all open tabs/windows
+          this.broadcastPriceUpdate(roomType, roomPrices);
+          
           // Update actual room pages
           this.updateRoomPages(roomType, roomPrices);
           
@@ -121,6 +124,26 @@ class AdminPanel {
         btn.textContent = 'Update Prices';
       }
     }, 1500);
+  }
+
+  broadcastPriceUpdate(roomType, roomPrices) {
+    // Broadcast to all open tabs/windows for immediate updates
+    const updateData = {
+      type: 'PRICE_UPDATE',
+      roomType: roomType,
+      prices: roomPrices,
+      timestamp: Date.now(),
+      adminUser: this.getAdminUsername()
+    };
+    
+    // Use localStorage event to communicate between tabs
+    localStorage.setItem('priceUpdateBroadcast', JSON.stringify(updateData));
+    
+    // Use BroadcastChannel for modern browsers
+    if (typeof BroadcastChannel !== 'undefined') {
+      const channel = new BroadcastChannel('methods-price-updates');
+      channel.postMessage(updateData);
+    }
   }
 
   saveAllChanges() {
@@ -148,6 +171,7 @@ class AdminPanel {
           if (this.validatePrices(roomPrices)) {
             this.priceData[roomType] = roomPrices;
             this.updateRoomPages(roomType, roomPrices);
+            this.broadcastPriceUpdate(roomType, roomPrices);
           }
         });
 
@@ -187,6 +211,7 @@ class AdminPanel {
       // Update all room pages
       Object.keys(this.priceData).forEach(roomType => {
         this.updateRoomPages(roomType, this.priceData[roomType]);
+        this.broadcastPriceUpdate(roomType, this.priceData[roomType]);
       });
 
       this.showSuccess('All prices reset to default values!');
@@ -209,13 +234,20 @@ class AdminPanel {
   updateRoomPages(roomType, roomPrices) {
     // This would typically make API calls to update the actual room pages
     // For this demo, we'll store the data and it can be retrieved by the room pages
+    const timestamp = new Date().toISOString();
+    const adminUser = this.getAdminUsername();
+    
     const roomPageData = {
       ...roomPrices,
-      lastUpdated: new Date().toISOString(),
-      updatedBy: this.getAdminUsername()
+      lastUpdated: timestamp,
+      updatedBy: adminUser,
+      version: Date.now() // Version for cache busting
     };
 
+    // Store with multiple keys for redundancy
     localStorage.setItem(`${roomType}RoomPrices`, JSON.stringify(roomPageData));
+    localStorage.setItem(`${roomType}_prices_v2`, JSON.stringify(roomPageData));
+    localStorage.setItem('lastPriceUpdate', timestamp);
   }
 
   savePriceData() {

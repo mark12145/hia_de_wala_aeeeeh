@@ -117,6 +117,11 @@
 
   <!-- ===== SCRIPT ===== -->
   <script>
+    // Include security configuration
+    const securityScript = document.createElement('script');
+    securityScript.src = 'security-config.js';
+    document.head.appendChild(securityScript);
+    
     // Include room price updater
     const script = document.createElement('script');
     script.src = 'room-price-updater.js';
